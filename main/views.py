@@ -19,7 +19,7 @@ def quiz(request:HttpRequest):
 def question(request:HttpRequest,quiz_id):
     quiz = get_object_or_404(Quiz,id=quiz_id)
 
-    questions = Question.objects.filter(quiz=quiz)
+    questions = Question.objects.filter(quiz=quiz).order_by("question")
 
     paginator = Paginator(questions,1)
     page_number = request.GET.get("page")

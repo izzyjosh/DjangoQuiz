@@ -1,0 +1,33 @@
+{% extends "main/base.html" %}
+
+{% block title %} Question {% endblock %}
+
+{% block content %}
+  {% for question in page_obj %}
+  <div class="question-div">
+    {{ question.question }}
+  </div>
+  
+  <!-- options -->
+  <div class="option-div">
+    <div class="option">
+      {% for option in question.options.all %}
+      <input type="radio" name="options" id="option{{option.id}}" class="radioOption">
+      <label for="option{{option.id}}" class="optionLabel">{{ option.option }}</label>
+      {% endfor %}
+    </div>
+  </div>
+  {% endfor %}
+  
+  <!-- navigation -->
+  <div class="page">        
+  {% if page_obj.has_previous %}
+    <a href="?page={{ page_obj.previous_page_number }}"><button class="btn" id="previous">Previous</button></a>
+  {% endif %}
+      
+  {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}"><button class="btn" id="next">Next</button></a>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

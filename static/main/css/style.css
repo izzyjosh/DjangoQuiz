@@ -55,6 +55,7 @@ input[type="radio"] {
     display: flex;
     justify-content: space-between;
     margin: 30px 10px;
+    text-align: center;
 }
 .btn {
     padding: 20px;

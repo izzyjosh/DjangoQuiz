@@ -6,7 +6,7 @@ class Quiz(models.Model):
     name:str = models.CharField(max_length=100)
 
     class Meta:
-        verbose_name_plural = "Quizzes"
+        verbose_name_plural:str = "Quizzes"
 
     def __str__(self):
         return self.name
@@ -21,7 +21,7 @@ class Question(models.Model):
 class Option(models.Model):
     question:User = models.ForeignKey(Question,related_name="options",on_delete=models.CASCADE)
     option:str = models.CharField(max_length=200)
-    is_correct = models.BooleanField(default=False)
+    is_correct:bool = models.BooleanField(default=False)
 
     def __str__(self):
         return self.option
@@ -32,7 +32,7 @@ class UserAnswer(models.Model):
     selected_option:Option = models.ForeignKey(Option,on_delete=models.CASCADE)
 
     class Meta:
-        verbose_name_plural = "User's Answer"
+        verbose_name_plural:str = "User's Answer"
 
     def __str__(selt):
         return self.user.username

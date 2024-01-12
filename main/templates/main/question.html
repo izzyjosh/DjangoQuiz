@@ -11,10 +11,13 @@
   <!-- options -->
   <div class="option-div">
     <div class="option">
+      <form action="" method="post">
+      {% csrf_token %}
       {% for option in question.options.all %}
       <input type="radio" name="options" id="option{{option.id}}" class="radioOption">
       <label for="option{{option.id}}" class="optionLabel">{{ option.option }}</label>
       {% endfor %}
+      </form>
     </div>
   </div>
   {% endfor %}

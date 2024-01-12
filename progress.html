@@ -1,0 +1,13 @@
+<label for="file">File progress:</label>
+
+<progress id="file" max="100" value="0"></progress>
+<script>
+  let file = document.querySelector("#file");
+  console.log(file)
+  const timer = setInterval(() => {
+    let val = file.getAttribute("value");
+    numVal = Number(val);
+    newVal = numVal + 1;
+    file.setAttribute("value", `${newVal}`);
+  },1000)
+</script>

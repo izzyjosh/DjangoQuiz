@@ -15,8 +15,16 @@
       {% csrf_token %}
       <input type="hidden" name="question_id" value="{{ question.id }}" id="question_id">
       {% for option in question.options.all %}
-      <input type="radio" name="options" id="option{{option.id}}" class="radioOption" value="{{ option.option }}">
-      <label for="option{{option.id}}" class="optionLabel">{{ option.option }}</label>
+      <div class="input-group">
+  <div class="input-group-prepend">
+    <div class="input-group-text">
+    <input type="radio" id="option{{option.id}}" name="options" value="{{ option.option }}">
+    </div>
+  </div>
+  <label for="option{{option.id}}" class="form-control my-2">{{ option.option }}</label>
+</div>
+      <!--<input type="radio" name="options" id="option{{option.id}}" class="radioOption" value="{{ option.option }}" class="form-control">
+      <label for="option{{option.id}}" class="optionLabel">{{ option.option }}</label>-->
       {% endfor %}
       </form>
     </div>

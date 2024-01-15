@@ -7,9 +7,9 @@
     font-family: "digital";
     src: url("./7_segmental_digital_display/display.ttf");
 }
-body {
+/*body {
     background: #445065;
-}
+}*/
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -37,10 +37,10 @@ body {
     font-size: 20px;
     line-height: 25px;
 }
-input[type="radio"] {
+/*input[type="radio"] {
     display: none;
-}
-.optionLabel {
+}*/
+/*.optionLabel {
     background: black;
     display: block;
     width: 80%;
@@ -50,7 +50,7 @@ input[type="radio"] {
     color: white;
     text-align: center;
     border-radius: 20px 0 20px 0;
-}
+}*/
 .page {
     display: flex;
     justify-content: space-between;

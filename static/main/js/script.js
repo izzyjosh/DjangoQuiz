@@ -18,28 +18,33 @@ countdownTimer(20);
 
 
 //quiz logic
+let question_id = document.querySelector("#question_id").value;
+
 
 document.addEventListener("DOMContentLoaded", function () {
-  var storedFormData = sessionStorage.getItem('formData');
+  var storedFormData = sessionStorage.getItem('form'+question_id);
 
   if (storedFormData) {
     var formData = JSON.parse(storedFormData);
 
-    document.querySelector('input[name="options"][value="' + formData.selectedOption + '"]').checked = true;
+    let answer = document.querySelector('input[name="options"][value="' + formData.selectedOption + '"]');
+
+    answer.checked = true;
 
   }
 
-  var formElement = document.getElementById('myForm');
+  /* var formElement = document.getElementById('myForm'+form.questiin_id.value);*/
+  let form = document.getElementById("myForm"+question_id);
 
-  formElement.addEventListener('submit', function (event) {
+  form.addEventListener('change', function (event) {
     event.preventDefault();
 
     var selectedOption = document.querySelector('input[name="options"]:checked').value;
 
-    sessionStorage.setItem('formData', JSON.stringify({
+    sessionStorage.setItem('form'+question_id, JSON.stringify({
       selectedOption: selectedOption
     }));
-  console.log("Form submitted with option: " + selectedOption);
+    console.log("Form submitted with option: " + selectedOption);
 
   })
 

@@ -11,8 +11,9 @@
   <!-- options -->
   <div class="option-div">
     <div class="option">
-      <form id="myForm" action="" method="post">
+      <form id="myForm{{question.id}}" action="" method="post">
       {% csrf_token %}
+      <input type="hidden" name="question_id" value="{{ question.id }}" id="question_id">
       {% for option in question.options.all %}
       <input type="radio" name="options" id="option{{option.id}}" class="radioOption" value="{{ option.option }}">
       <label for="option{{option.id}}" class="optionLabel">{{ option.option }}</label>

@@ -39,13 +39,13 @@
 }
 /*input[type="radio"] {
     display: none;
-}*/
-/*.optionLabel {
+}
+.optionLabel {
     background: black;
     display: block;
     width: 80%;
     overflow: hidden;
-    margin: 20px auto;
+    margin: 10px auto;
     padding: 12px 20px;
     color: white;
     text-align: center;

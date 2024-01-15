@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let answer = document.querySelector('input[name="options"][value="' + formData.selectedOption + '"]');
 
     answer.checked = true;
+    answer.setAttribute('style', "color:blue");
 
   }
 

@@ -3,7 +3,7 @@ from django.shortcuts import (render,get_object_or_404)
 from django.http import HttpRequest
 from django.core.paginator import (Paginator,EmptyPage,PageNotAnInteger)
 
-#my import
+#my import 
 from .models import (Quiz,Question)
 
 

@@ -4,8 +4,7 @@
 
 {% block content %}
   {% for question in page_obj %}
-  <div class="question-div">
-    {{ question.question }}
+  <div class="question-div">{{page_obj.number}}. {{ question.question }}
   </div>
   
   <!-- options -->

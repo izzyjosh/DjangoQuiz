@@ -46,8 +46,16 @@ document.addEventListener("DOMContentLoaded", function () {
       selectedOption: selectedOption
     }));
     console.log("Form submitted with option: " + selectedOption);
-
   })
-
-
 })
+
+let arr = [];
+for (var i = 0; i < sessionStorage.length; i++) {
+  var key = sessionStorage.key(i);
+  var value = sessionStorage.getItem(key);
+  let dict = {
+    key: `${value}`
+  };
+  arr.push(dict);
+  console.log(arr);
+}

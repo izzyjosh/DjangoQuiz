@@ -54,6 +54,20 @@ document.addEventListener("DOMContentLoaded", function () {
 const submitButton = document.querySelector("#submit");
 const quizId = submitButton.getAttribute("data-id");
 console.log(quizId);
+
+
+async function submit () {
+  fetch(`submit/${quizId}`,
+    {
+      method: "GET",
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCSRFToken(),
+      },
+      body: JSON.stringify({
+        answers
+      }),
+    })
 let arr = [];
 for (var i = 0; i < sessionStorage.length; i++) {
   var key = sessionStorage.key(i);

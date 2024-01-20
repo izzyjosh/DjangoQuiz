@@ -1,6 +1,9 @@
+#third party import 
+import json
+
 #django imports
 from django.shortcuts import (render,get_object_or_404)
-from django.http import HttpRequest
+from django.http import HttpRequest,JsonResponse
 from django.core.paginator import (Paginator,EmptyPage,PageNotAnInteger)
 
 #my import 
@@ -37,4 +40,17 @@ def question(request:HttpRequest,quiz_id):
     return render(request,"main/question.html",context)
 
 
+def submit(request:HttpRequest,quiz_id):
+    quiz = get_object_or_404(Quiz,id=quiz_id)
+    questions = Question.objects.filter(quiz=quiz)
 
+    answer = []
+
+    for question in questions:
+        ans = Option.objects.get(question=question,is_correct=True)
+        answer.append(ans.option)
+
+    data = {"answers":answer}
+    json_data = json.dumps(data)
+
+    return JsonResponse(json_data,content_type="application/json") 

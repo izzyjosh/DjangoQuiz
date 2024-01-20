@@ -49,13 +49,15 @@ document.addEventListener("DOMContentLoaded", function () {
   })
 })
 
+
+//submit
+const submitButton = document.querySelector("#submit");
+const quizId = submitButton.getAttribute("data-id");
+console.log(quizId);
 let arr = [];
 for (var i = 0; i < sessionStorage.length; i++) {
   var key = sessionStorage.key(i);
   var value = sessionStorage.getItem(key);
-  let dict = {
-    key: `${value}`
-  };
-  arr.push(dict);
-  console.log(arr);
+  let val = JSON.parse(value);
+  arr.push(val.selectedOption)
 }

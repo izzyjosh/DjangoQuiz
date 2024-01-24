@@ -40,17 +40,26 @@ def question(request:HttpRequest,quiz_id):
     return render(request,"main/question.html",context)
 
 
-def submit(request:HttpRequest,quiz_id):
-    quiz = get_object_or_404(Quiz,id=quiz_id)
-    questions = Question.objects.filter(quiz=quiz)
+def submit(request:HttpRequest):
+    if request.method == "POST":
 
-    answer = []
+        id = request.POST.get("id")
+        client_answer = request.POST.get("answer")
 
-    for question in questions:
-        ans = Option.objects.get(question=question,is_correct=True)
-        answer.append(ans.option)
+        quiz = get_object_or_404(Quiz,id=id)
+        questions = Question.objects.filter(quiz=quiz)
 
-    data = {"answers":answer}
-    json_data = json.dumps(data)
+        server_answer = []
 
-    return JsonResponse(json_data,content_type="application/json") 
+        for question in questions:
+            ans = Option.objects.get(question=question,is_correct=True)
+            answer.append(ans.option)
+
+        result_count = 0
+        for i in range(len(client_answer)):
+            if client_answer[i] == server_answer[i]:
+                result_count += 1
+
+        json_data = json.dumps(result_count)
+
+        return JsonResponse(json_data,content_type="application/json") 

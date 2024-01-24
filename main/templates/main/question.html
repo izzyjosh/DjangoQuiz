@@ -36,7 +36,7 @@
     <a href="?page={{ page_obj.previous_page_number }}"><button class="btn" id="previous">Previous</button></a>
   {% endif %}
   {% if page_obj.has_previous and not page_obj.has_next%}
-    <button id="submit" data-id="{{quiz.id}}" class="btn">Submit</button>
+    <button id="submit" data-id="{{quiz.id}}" class="btn" onclick="submitAnswers()">Submit</button>
   {% endif %}
   {% if page_obj.has_next %}
     <a href="?page={{ page_obj.next_page_number }}"><button class="btn" id="next">Next</button></a>

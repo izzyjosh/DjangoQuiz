@@ -5,7 +5,7 @@
 {% block content %}
 <h3 id="avail-quiz">Available Quizzes</h3>
 <div class="quizzes">
-  {% for quiz in quizzes %}
+  {% for quiz in object_list %}
   <a href="{% url 'main:question' quiz.id %}" class="quiz">
     {{ quiz.name }}
   </a>

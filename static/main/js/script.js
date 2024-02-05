@@ -18,11 +18,10 @@ countdownTimer(20);
 
 
 //quiz logic
-let question_id = document.querySelector("#question_id").value;
-
+let question_id = document.getElementById('question_id').value;
 
 document.addEventListener("DOMContentLoaded", function () {
-  var storedFormData = sessionStorage.getItem('form'+question_id);
+  var storedFormData = localStorage.getItem('form'+question_id);
 
   if (storedFormData) {
     var formData = JSON.parse(storedFormData);
@@ -30,11 +29,8 @@ document.addEventListener("DOMContentLoaded", function () {
     let answer = document.querySelector('input[name="options"][value="' + formData.selectedOption + '"]');
 
     answer.checked = true;
-    answer.setAttribute('style', "color:blue");
-
   }
 
-  /* var formElement = document.getElementById('myForm'+form.questiin_id.value);*/
   let form = document.getElementById("myForm"+question_id);
 
   form.addEventListener('change', function (event) {
@@ -42,64 +38,46 @@ document.addEventListener("DOMContentLoaded", function () {
 
     var selectedOption = document.querySelector('input[name="options"]:checked').value;
 
-    sessionStorage.setItem('form'+question_id, JSON.stringify({
+    localStorage.setItem('form'+question_id, JSON.stringify({
       selectedOption: selectedOption
     }));
-    console.log("Form submitted with option: " + selectedOption);
   })
 })
 
 
-//submit
-const submitButton = document.querySelector("#submit");
-const quizId = submitButton.getAttribute("data-id");
+const client_answer = []
+console.log(localStorage.length)
+for (let i = 0; i < localStorage.length; i++) {
+  let key = localStorage.key(i)
+  let value = localStorage.getItem(key)
+  const val = JSON.parse(value)
+  client_answer.push(val.selectedOption)
+}
+console.log(client_answer)
 
-async function submitAnswers() {
-  var answers = [];
-  // reset clock to make sure clock stops counting.
-  window.clearInterval(interval);
-
-  for (let i = 0; i < sessionStorage.length; i++) {
-    const key = sessionStorage.key(i)
-    const value = sessionStorage.getItem(key)
-    const val = JSON.parse(value)
-    answers.push(val.selectedOption)
-  }
-
-  // before sumbit, look into question list to find answers
-  for (let i = 0; i < Number(num_of_questions); i++) {
-    localStorage.getItem('q'+questions_list[i])
-    ? (answers[`${i}`] = localStorage.getItem('q' + questions_list[i])): (answers[`${i}`] = "");
-  }
-
-  answers["quiz_id"] = quiz_id;
-
-  // the NS_BINDING_ABORT error with firefox seems to be caused by the async behaviour of fetch API
-  // when location is changed to /  response is not yet received and binding is aborted.
-  // code change is to change it to synchronous action.  change browser to / after receive response from server.
-  const response = await(
-    fetch("submit/", {
+const quiz_id = document.getElementById("submit").getAttribute("data-id")
+const url = `http://localhost:8000/submit/${quiz_id}/`
+function submitAnswers() {
+  const response = fetch(url,
+    {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
-        "X-CSRFToken": csrf_token,
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(answers),
-    }));
-
-  if (response.ok) {
-    const data = await response.json();
-    const score = (Number(data.result) / Number(num_of_questions)) * 100;
-
-    if (score >= 50) {
-      alert(`Congratulations!!!\n\n\t\tScore: ${score}%`);
-    } else {
-      alert(`Failed!!!\n\n\t\tScore: ${score}%`);
+      body: JSON.stringify(client_answer),
+    })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
     }
-  } else {
-    throw new Error('Request failed: ' + response.statusText);
-  }
+    return response.json();
+  })
+  .then(data => {
+    console.log('Submission successful:', data);
+    alert(`you scored ${data.answer} out of 4. Congratulations 🎉👏`)
 
-  localStorage.clear();
-  window.location = "/";
+  })
+  .catch(error => {
+    console.error('Error submitting answers:', error);
+  });
 }

@@ -5,24 +5,24 @@ import json
 from django.shortcuts import (render,get_object_or_404)
 from django.http import HttpRequest,JsonResponse
 from django.core.paginator import (Paginator,EmptyPage,PageNotAnInteger)
+from django.views.decorators.csrf import csrf_exempt
+from django.views.generic import ListView
 
 #my import 
-from .models import (Quiz,Question)
+from .models import (Quiz,Question,Answer)
 
 
-def quiz(request:HttpRequest):
-    quizzes = Quiz.objects.all()
-
-    context = {
-            "quizzes":quizzes,
-            }
-    return render(request,"main/home.html",context)
+class Quizzes(ListView):
+    model = Quiz
+    template_name = "main/home.html"
 
 
 def question(request:HttpRequest,quiz_id):
     quiz = get_object_or_404(Quiz,id=quiz_id)
 
-    questions = Question.objects.filter(quiz=quiz).order_by("question")
+    questions = quiz.get_questions()
+
+    #questions = Question.objects.filter(quiz=quiz).order_by("question")
 
     paginator = Paginator(questions,1)
     page_number = request.GET.get("page")
@@ -39,27 +39,27 @@ def question(request:HttpRequest,quiz_id):
             }
     return render(request,"main/question.html",context)
 
+@csrf_exempt
+def submit(request:HttpRequest,quiz_id):
 
-def submit(request:HttpRequest):
-    if request.method == "POST":
+    client_answer = json.loads(request.body)
+    print(client_answer)
 
-        id = request.POST.get("id")
-        client_answer = request.POST.get("answer")
+    quiz = get_object_or_404(Quiz,id=quiz_id)
+    questions = Question.objects.filter(quiz=quiz)
 
-        quiz = get_object_or_404(Quiz,id=id)
-        questions = Question.objects.filter(quiz=quiz)
+    server_answer = []
 
-        server_answer = []
+    for question in questions:
+        ans = Answer.objects.get(question=question,correct=True)
+        server_answer.append(ans.option)
 
-        for question in questions:
-            ans = Option.objects.get(question=question,is_correct=True)
-            answer.append(ans.option)
+    result = 0
+    for i in range(len(client_answer)):
+        if client_answer[i] in server_answer:
+            result += 1
 
-        result_count = 0
-        for i in range(len(client_answer)):
-            if client_answer[i] == server_answer[i]:
-                result_count += 1
+    data = {"answer":result}
+    print(server_answer)
 
-        json_data = json.dumps(result_count)
-
-        return JsonResponse(json_data,content_type="application/json") 
+    return JsonResponse(data,content_type="application/json") 

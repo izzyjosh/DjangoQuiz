@@ -2,10 +2,16 @@
 from django.contrib import admin
 
 #my import
-from .models import (Quiz, Question ,Option ,UserAnswer)
+from .models import (Quiz, Question ,Answer,Result)
+
+class AnswerInline(admin.TabularInline):
+    model = Answer
+
+class QuestionAdmin(admin.ModelAdmin):
+    inlines = [AnswerInline]
 
 
 admin.site.register(Quiz)
-admin.site.register(Question)
-admin.site.register(Option)
-admin.site.register(UserAnswer)
+admin.site.register(Question,QuestionAdmin)
+admin.site.register(Answer)
+admin.site.register(Result)

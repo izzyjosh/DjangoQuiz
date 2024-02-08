@@ -39,6 +39,7 @@ def question(request:HttpRequest,quiz_id):
             }
     return render(request,"main/question.html",context)
 
+#for displaying result
 @csrf_exempt
 def submit(request:HttpRequest,quiz_id):
 
@@ -60,6 +61,5 @@ def submit(request:HttpRequest,quiz_id):
             result += 1
 
     data = {"answer":result}
-    print(server_answer)
 
     return JsonResponse(data,content_type="application/json") 
